@@ -1,39 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Belajar HTML</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="./vendor/bootstrap.min.css">
 </head>
 <body>
-<nav> 
-  <div class="wrapper">
-    <div class="logo"><a href="">Alterpix.</a></div>
-    <div class="menu">
-      <ul>
-        <li><a href="#Home">Home</a></li>
-        <li><a href="#Courses">Courses</a></li>
-        <li><a href="#Tutors">Tutors</a></li>
-        <li><a href="#Partners">Partners</a></li>
-        <li><a href="#Contact">Contact</a></li>
-        <li><a href="" class="tbl-biru">Sign Up</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<div class="wrapper">
-    <section id="home">
-      <img src="https://img.freepik.com/free-vector/programming-concept-illustration_114360-1351.jpg?size=626&ext=jpg&ga=GA1.2.1471207435.1669685839&semt=sph"/>
-      <div class="kolom">
-      <p class="deskripsi">Belajar programing #dirumahaja</p>
-      <h2>Tetap sehat, tetap semangat</h2>
-      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam, placeat.</p>
-      <p><a href="" class="tbl-pink">Pelajaari lebih lanjut</a></p>
-      </div>
-    </section>
-</div>
+    <script src="./vendor/bootstrap.bundle.js"></script>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </li>
 
+            </li>
+          </ul>
+        </div>
+      </nav>
+    <section class="bg-primary-subtle">
+        <div class="container py-5">
+            <div class="row align-items-center py-5">
+                <div class="col-md-7 order-2 order-md-1">
+                    <p class="fs-5 font-monospace m-0">hi, my name is Asmaul</p>
+                    <p class="display-3 fw-light">aku <span id="element">web developer </span></p>
+                    <a href="" class="btn btn-danger">About me</a>
+                </div>
+                <div class="col-md-5 order-1 order-md-2">
+                    <img class="img-fluid" src="./assets/img/man-profile.png" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">About</h2>
+            <div class="row">
+                <div class="col-sm-6">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil commodi itaque odit, reiciendis deleniti accusamus minus modi sit, ipsa esse soluta laudantium ea laborum nobis quas doloribus voluptas nulla ipsum?</div>
+                <div class="col-sm-6">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias voluptatibus earum fugit cupiditate est aperiam maxime eaque iure reprehenderit mollitia, expedita tempore explicabo! Numquam nostrum quos expedita! Accusantium, excepturi. Incidunt!</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portofolio" class="bg-primary-subtle py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Portofolio</h2>
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="./assets/img/1.png" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>         
+                </div>
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="./assets/img/2.png" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>         
+                </div>
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="./assets/img/3.png" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>         
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="./assets/img/4.png" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>         
+                </div>
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="./assets/img/5.png" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>         
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="./assets/img/6.png" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>         
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <form>
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Email address</label>
+                              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInputPassword1">Password</label>
+                              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            </div>
+                            <div class="form-group form-check">
+                              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                              <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                          </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script><script src="./vendor/typed.umd.js"></script>
+<script src="./vendor/bootstrap.bundle.js"></script>
+<script src="./assets/script.js"></script>
 </body>
 </html>
