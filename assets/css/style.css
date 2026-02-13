@@ -14,18 +14,33 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: url('../img/Normal.cur'), auto;
+    cursor: url('../img/Normal.cur'), default;
 }
 
+/* Interactive elements - Link cursor */
 a,
 button,
-.cyber-btn {
+.cyber-btn,
+.writeup-card,
+.terminal-card:hover {
     cursor: url('../img/Link.cur'), pointer !important;
 }
 
+/* Text input - Text cursor */
 input,
-textarea {
-    cursor: url('../img/Text.cur'), text;
+textarea,
+[contenteditable="true"] {
+    cursor: url('../img/Text.cur'), text !important;
+}
+
+/* Move cursor for draggable elements */
+[draggable="true"] {
+    cursor: url('../img/Move.cur'), move !important;
+}
+
+/* Help cursor for tooltips */
+[title]:hover {
+    cursor: url('../img/Help.cur'), help !important;
 }
 
 body {
@@ -344,15 +359,21 @@ footer {
         display: none !important;
     }
 
+    /* Mobile cursor optimization - .cur files don't work well on mobile */
     * {
-        cursor: auto !important;
-        /* Restore default cursor */
+        cursor: default !important;
     }
 
     a,
     button,
-    input {
+    .cyber-btn,
+    .writeup-card {
         cursor: pointer !important;
+    }
+
+    input,
+    textarea {
+        cursor: text !important;
     }
 }
 
