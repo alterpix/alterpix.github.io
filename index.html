@@ -361,13 +361,39 @@
       L2Dwidget.init(newConfig);
     });
 
-    // Initialize
-    // Initialize when DOM is ready to prevent race conditions
-    document.addEventListener('DOMContentLoaded', () => {
-      if (typeof L2Dwidget !== 'undefined') {
+    // Robust initialization with retry logic for mobile browsers
+    let initAttempts = 0;
+    const maxAttempts = 10;
+    const retryDelay = 300; // milliseconds
+
+    function tryInitializeLive2D() {
+      initAttempts++;
+
+      // Check if library is fully loaded and ready
+      if (typeof L2Dwidget !== 'undefined' && typeof L2Dwidget.init === 'function') {
+        console.log(`Live2D initialized successfully on attempt ${initAttempts}`);
         initLive2D();
+      } else if (initAttempts < maxAttempts) {
+        console.log(`Live2D not ready, retrying... (attempt ${initAttempts}/${maxAttempts})`);
+        setTimeout(tryInitializeLive2D, retryDelay * initAttempts); // Exponential backoff
       } else {
-        console.error("L2Dwidget library not found.");
+        console.error("Failed to initialize Live2D after multiple attempts. Library may not be loaded.");
+      }
+    }
+
+    // Try initialization when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', tryInitializeLive2D);
+    } else {
+      // DOM already loaded
+      tryInitializeLive2D();
+    }
+
+    // Fallback: ensure initialization on window load (all external resources loaded)
+    window.addEventListener('load', () => {
+      if (initAttempts === 0 || (typeof L2Dwidget !== 'undefined' && !document.getElementById('live2d-widget'))) {
+        console.log("Triggering Live2D init from window.onload");
+        tryInitializeLive2D();
       }
     });
   </script>
