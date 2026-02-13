@@ -312,7 +312,14 @@
         });
 
         // Initialize
-        initLive2D();
+        // Initialize when DOM is ready to prevent race conditions
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof L2Dwidget !== 'undefined') {
+                initLive2D();
+            } else {
+                console.error("L2Dwidget library not found.");
+            }
+        });
     </script>
 
 </body>
