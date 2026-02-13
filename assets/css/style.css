@@ -324,6 +324,7 @@ footer {
 .cyber-btn-glitch {
     position: relative;
     z-index: 1;
+    pointer-events: none;
 }
 
 .cyber-btn-tag {
@@ -333,6 +334,7 @@ footer {
     background: var(--terminal-bg);
     padding: 2px 4px;
     border: 1px solid var(--secondary-color);
+    pointer-events: none;
 }
 
 .status-online {
