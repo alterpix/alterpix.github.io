@@ -138,6 +138,11 @@
       }
     };
 
+    // Adjust for mobile
+    if (window.innerWidth < 768) {
+      baseModelConfig.display.vOffset = 0; // Reset offset for mobile to prevent floating
+    }
+
     // Initialize default widget
     L2Dwidget.init(baseModelConfig);
 
