@@ -40,26 +40,6 @@ const draw = () => {
 
 window.setInterval(draw, 30);
 
-// --- Custom Anime Cursor Logic ---
-const cursor = document.getElementById('anime-cursor');
-
-document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-});
-
-// Add "Excited" animation on hoverable elements
-const hoverables = document.querySelectorAll('a, button, .cyber-card');
-
-hoverables.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        cursor.classList.add('hovering');
-    });
-    el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('hovering');
-    });
-});
-
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;

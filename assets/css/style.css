@@ -14,38 +14,18 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: none;
-    /* Hide default cursor */
+    cursor: url('../img/Normal.cur'), auto;
 }
 
 a,
 button,
-input {
-    cursor: none;
+.cyber-btn {
+    cursor: url('../img/Link.cur'), pointer !important;
 }
 
-/* Custom Animated Cursor */
-#anime-cursor {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 64px;
-    height: 64px;
-    pointer-events: none;
-    z-index: 10000;
-
-    /* Load extracted GIF cursor */
-    background-image: url('../img/cursor.gif'),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="10" fill="red"/></svg>');
-
-    background-size: contain;
-    background-repeat: no-repeat;
-    transform: translate(-10%, -10%);
-}
-
-/* Hover Animation - Rotate slightly */
-.hovering {
-    transform: translate(-10%, -10%) rotate(-15deg) scale(1.1) !important;
+input,
+textarea {
+    cursor: url('../img/Text.cur'), text;
 }
 
 body {
