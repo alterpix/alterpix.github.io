@@ -1,0 +1,418 @@
+:root {
+    --bg-color: #050505;
+    --terminal-bg: #0a0a0a;
+    --primary-color: #00ff41;
+    /* Hacker Green */
+    --secondary-color: #008f11;
+    --text-color: #e0e0e0;
+    --glitch-color-1: #0ff;
+    --glitch-color-2: #f0f;
+    --font-mono: 'Share Tech Mono', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none;
+    /* Hide default cursor */
+}
+
+a,
+button,
+input {
+    cursor: none;
+}
+
+/* Custom Animated Cursor */
+#anime-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 64px;
+    height: 64px;
+    pointer-events: none;
+    z-index: 10000;
+
+    /* Load extracted GIF cursor */
+    background-image: url('../img/cursor.gif'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="10" fill="red"/></svg>');
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    transform: translate(-10%, -10%);
+}
+
+/* Hover Animation - Rotate slightly */
+.hovering {
+    transform: translate(-10%, -10%) rotate(-15deg) scale(1.1) !important;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Matrix Background */
+#matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.15;
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Layout */
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.section-title {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.cursor {
+    display: inline-block;
+    animation: blink-cursor 1s step-end infinite;
+}
+
+@keyframes blink-cursor {
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Terminal Card (User Profile) */
+.terminal-card {
+    background: var(--terminal-bg);
+    border: 1px solid #333;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+    overflow: hidden;
+}
+
+.terminal-header {
+    background: #1a1a1a;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #333;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.red {
+    background: #ff5f56;
+}
+
+.yellow {
+    background: #ffbd2e;
+}
+
+.green {
+    background: #27c93f;
+}
+
+.title {
+    margin-left: 10px;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.terminal-body {
+    padding: 20px;
+    font-family: inherit;
+    color: var(--text-color);
+}
+
+.comment {
+    color: #008f11;
+    font-style: italic;
+}
+
+/* Code Block Terminal Styling */
+.code-terminal {
+    background: var(--terminal-bg);
+    border: 1px solid #333;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.code-terminal .terminal-body {
+    padding: 0;
+    /* Reset padding for code blocks */
+}
+
+/* Remove default codehilite background/border if necessary */
+.code-terminal .codehilite {
+    background: transparent !important;
+    border: none !important;
+    padding: 15px;
+    overflow-x: auto;
+}
+
+.code-terminal pre {
+    margin: 0;
+}
+
+/* Writeup Image Styling */
+.writeup-body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border: 1px solid #333;
+    border-radius: 4px;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+}
+
+.writeup-body img:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+    border-color: var(--primary-color);
+}
+
+/* --- COMPACT WRITEUP STYLES --- */
+.writeup-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.writeup-group {
+    background: rgba(10, 10, 10, 0.5);
+    border: 1px solid #222;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.group-title {
+    color: #888;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    border-bottom: 1px dashed #333;
+    padding-bottom: 5px;
+}
+
+.writeup-list {
+    list-style: none;
+}
+
+.writeup-list li {
+    margin-bottom: 8px;
+}
+
+.writeup-list a {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    background: rgba(0, 255, 65, 0.05);
+    border-left: 2px solid transparent;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.writeup-list a:hover {
+    background: rgba(0, 255, 65, 0.1);
+    border-left: 2px solid var(--primary-color);
+    padding-left: 12px;
+}
+
+.log-id {
+    color: #666;
+    font-size: 0.8rem;
+    margin-right: 10px;
+    min-width: 60px;
+}
+
+.log-title {
+    flex-grow: 1;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.log-status {
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid #333;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 50px;
+}
+
+/* --- NAVBAR STYLES --- */
+.navbar {
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    pointer-events: none;
+    /* Let clicks pass through except for links */
+}
+
+.logo a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    pointer-events: auto;
+    /* Enable clicking */
+    background: rgba(0, 0, 0, 0.7);
+    padding: 5px 10px;
+    border: 1px solid var(--secondary-color);
+}
+
+.logo a:hover {
+    background: var(--primary-color);
+    color: #000;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+/* --- CYBER BUTTON STYLES --- */
+.cyber-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+    margin-top: 20px;
+    cursor: pointer !important;
+    /* Ensure pointer on buttons */
+}
+
+.cyber-btn:hover {
+    background: rgba(0, 255, 65, 0.1);
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+}
+
+.cyber-btn-glitch {
+    position: relative;
+    z-index: 1;
+}
+
+.cyber-btn-tag {
+    font-size: 0.7em;
+    margin-left: 8px;
+    opacity: 0.7;
+    background: var(--terminal-bg);
+    padding: 2px 4px;
+    border: 1px solid var(--secondary-color);
+}
+
+.status-online {
+    color: var(--primary-color);
+    animation: blink 2s infinite;
+}
+
+/* --- RESPONSIVENESS --- */
+
+/* Tablet (max-width: 768px) */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+        margin: 20px auto;
+    }
+
+    .writeup-grid {
+        grid-template-columns: 1fr;
+        /* Stack columns */
+    }
+
+    /* Hide custom cursor on touch devices to prevent issues */
+    #anime-cursor {
+        display: none !important;
+    }
+
+    * {
+        cursor: auto !important;
+        /* Restore default cursor */
+    }
+
+    a,
+    button,
+    input {
+        cursor: pointer !important;
+    }
+}
+
+/* Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .terminal-header {
+        padding: 8px 10px;
+    }
+
+    .title {
+        font-size: 0.8rem;
+    }
+
+    .terminal-body {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+
+    /* Stack writeup items nicely */
+    .writeup-list a {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .log-id {
+        margin-bottom: 2px;
+        font-size: 0.7rem;
+    }
+
+    .log-title {
+        margin-bottom: 4px;
+        font-size: 0.95rem;
+    }
+
+    .log-status {
+        align-self: flex-end;
+        font-size: 0.7rem;
+    }
+}

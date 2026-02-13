@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WRITEUP_LOG | [TITLE]</title>
+    <!-- Stylesheet: Pointing to assets/css/style.css from templates/ directory -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <canvas id="matrix-bg"></canvas>
+    <div class="scanline"></div>
+    <div id="anime-cursor"></div>
+
+    <nav class="navbar">
+        <div class="logo"><a href="../index.html">.. / BACK_TO_ROOT</a></div>
+    </nav>
+
+    <main class="container">
+        <article class="writeup-content">
+            <header>
+                <h1>[WRITEUP TITLE HERE]</h1>
+                <div class="writeup-meta">
+                    <span>DATE: [YYYY-MM-DD]</span>
+                    <span>AUTHOR: Alterpix</span>
+                    <span>CATEGORY: [WEB/NETWORK/CTF]</span>
+                </div>
+            </header>
+
+            <div class="writeup-body">
+                {{ CONTENT }}
+            </div>
+
+            <br>
+            <a href="../index.html" class="cyber-btn">
+                <span class="cyber-btn-glitch">END_SESSION</span>
+                <span class="cyber-btn-tag">EXIT</span>
+            </a>
+        </article>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+
+</html>
