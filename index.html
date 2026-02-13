@@ -140,7 +140,9 @@
 
     // Adjust for mobile - positive values move DOWN
     if (window.innerWidth < 768) {
-      baseModelConfig.display.vOffset = 100; // Move model down on mobile to prevent floating
+      baseModelConfig.display.vOffset = -250; // Move model down on mobile to prevent floating
+      baseModelConfig.display.hOffset = -80;
+
     }
 
     // Initialize default widget
