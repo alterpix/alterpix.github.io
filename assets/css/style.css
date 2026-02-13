@@ -73,7 +73,7 @@ h3 {
 /* Layout */
 .container {
     max-width: 1100px;
-    margin: 40px auto;
+    margin: 90px auto 40px;
     padding: 0 20px;
 }
 
@@ -268,13 +268,16 @@ footer {
 
 /* --- NAVBAR STYLES --- */
 .navbar {
-    padding: 20px;
+    padding: 15px 20px;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
     pointer-events: none;
+    background: rgba(5, 5, 5, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #333;
     /* Let clicks pass through except for links */
 }
 
@@ -312,8 +315,6 @@ footer {
     overflow: hidden;
     transition: 0.3s;
     margin-top: 20px;
-    cursor: pointer !important;
-    /* Ensure pointer on buttons */
 }
 
 .cyber-btn:hover {
