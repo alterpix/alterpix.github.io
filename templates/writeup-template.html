@@ -95,9 +95,9 @@
             }
         };
 
-        // Adjust for mobile
+        // Adjust for mobile - positive values move DOWN
         if (window.innerWidth < 768) {
-            baseModelConfig.display.vOffset = 0; // Reset offset for mobile to prevent floating
+            baseModelConfig.display.vOffset = 100; // Move model down on mobile to prevent floating
         }
 
         // Initialize default widget
