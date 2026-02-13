@@ -349,7 +349,7 @@ footer {
 @media (max-width: 768px) {
     .container {
         padding: 0 15px;
-        margin: 20px auto;
+        margin: 90px auto 20px;
     }
 
     .writeup-grid {
