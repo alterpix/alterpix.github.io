@@ -44,9 +44,12 @@ textarea,
 }
 
 body {
-    background: linear-gradient(-45deg, #000000, #001a00, #050505, #003300);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    background:
+        radial-gradient(ellipse at top, rgba(0, 255, 200, 0.05) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom right, rgba(0, 255, 65, 0.08) 0%, transparent 50%),
+        linear-gradient(-45deg, #000000, #001a00, #001a1a, #050505, #003300, #001400, #002600, #000a00);
+    background-size: 100% 100%, 100% 100%, 400% 400%;
+    animation: gradientShift 20s ease infinite;
     color: var(--text-color);
     font-family: var(--font-mono);
     line-height: 1.6;
@@ -55,15 +58,19 @@ body {
 
 @keyframes gradientShift {
     0% {
-        background-position: 0% 50%;
+        background-position: 0% 0%, 0% 0%, 0% 50%;
     }
 
-    50% {
-        background-position: 100% 50%;
+    33% {
+        background-position: 0% 0%, 0% 0%, 100% 50%;
+    }
+
+    66% {
+        background-position: 0% 0%, 0% 0%, 0% 100%;
     }
 
     100% {
-        background-position: 0% 50%;
+        background-position: 0% 0%, 0% 0%, 0% 50%;
     }
 }
 
