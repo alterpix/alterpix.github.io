@@ -26,12 +26,6 @@ button,
     cursor: url('../img/Link.cur'), pointer !important;
 }
 
-/* Ensure child elements inherit cursor */
-.cyber-btn *,
-a * {
-    cursor: inherit !important;
-}
-
 /* Text input - Text cursor */
 input,
 textarea,
