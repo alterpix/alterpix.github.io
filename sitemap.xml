@@ -6,6 +6,12 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://alterpix.github.io/writeups/about.html</loc>
+    <lastmod>2026-02-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://alterpix.github.io/writeups/dummy_links.html</loc>
     <lastmod>2026-02-14</lastmod>
     <changefreq>monthly</changefreq>
@@ -19,6 +25,12 @@
   </url>
   <url>
     <loc>https://alterpix.github.io/writeups/dummy_secret.html</loc>
+    <lastmod>2026-02-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alterpix.github.io/writeups/portfolio.html</loc>
     <lastmod>2026-02-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

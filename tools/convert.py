@@ -348,7 +348,7 @@ def process_file(input_file):
     output_html = output_html.replace("[WRITEUP TITLE HERE]", title_text)
     output_html = output_html.replace("[YYYY-MM-DD]", meta.get("date", "YYYY-MM-DD"))
     output_html = output_html.replace("[WEB/NETWORK/CTF]", meta.get("category", "Uncategorized"))
-    output_html = output_html.replace("Alterpix", meta.get("author", "Alterpix"))
+    output_html = output_html.replace("[AUTHOR]", meta.get("author", "Alterpix"))
     output_html = output_html.replace("<!-- SEO_TAGS_PLACEHOLDER -->", seo_tags)
     output_html = output_html.replace("<!-- DISCLAIMER_PLACEHOLDER -->", disclaimer_html)
     
@@ -433,6 +433,9 @@ def generate_index_list(posts):
     sorted_cats = sorted(groups.keys())
     
     for cat in sorted_cats:
+        if cat == "PAGE": # Exclude static pages from the feed
+            continue
+            
         html_output += f'<div class="writeup-group">\n'
         html_output += f'  <h3 class="group-title">:: {cat} ::</h3>\n'
         html_output += f'  <ul class="writeup-list">\n'

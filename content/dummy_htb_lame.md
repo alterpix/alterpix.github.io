@@ -3,6 +3,7 @@ title: "Writeup: Capture The Flag - HackTheBox 'Lame'"
 date: "2026-02-13"
 category: "Writeup"
 tags: "HTB, CTF, Easy, Linux, Samba"
+author: "Alterpix"
 description: "Writeup singkat untuk mesin Lame di HackTheBox. Mesin legendaris yang mengajarkan kita tentang Samba Vulnerability (CVE-2007-2447)."
 ---
 

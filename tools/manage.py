@@ -8,7 +8,7 @@ import re
 CONTENT_DIR = "content"
 TEMPLATE_DIR = "templates"
 
-def create_new_post(title, category):
+def create_new_post(title, category, template_name="ctf-writeup"):
     slug = title.lower().replace(" ", "-").replace(":", "").replace("/", "")
     filename = f"{slug}.md"
     filepath = os.path.join(CONTENT_DIR, filename)
@@ -18,11 +18,27 @@ def create_new_post(title, category):
         return
 
     today = datetime.date.today().strftime("%Y-%m-%d")
+    template_path = os.path.join("templates", "markdown", f"{template_name}.md")
     
-    template = f"""---
+    if os.path.exists(template_path):
+        with open(template_path, "r", encoding="utf-8") as f:
+            template = f.read()
+            
+        # Replace placeholders
+        template = template.replace("{title}", title)
+        template = template.replace("{today}", today)
+        template = template.replace("{category}", category)
+        template = template.replace("{author}", "Alterpix") # Default author
+        template = template.replace("{difficulty}", "Easy")
+        template = template.replace("{os}", "Linux")
+        template = template.replace("{topic}", title) # Use title as topic default
+    else:
+        print(f"[-] Warning: Template '{template_name}' not found. Using default.")
+        template = f"""---
 title: "{title}"
 date: "{today}"
 category: "{category}"
+author: "Alterpix"
 tags: ""
 description: ""
 ---
@@ -104,6 +120,7 @@ def main():
     parser_new = subparsers.add_parser("new", help="Create a new writeup")
     parser_new.add_argument("title", help="Title of the post")
     parser_new.add_argument("--category", "-c", default="Writeup", help="Category (default: Writeup)")
+    parser_new.add_argument("--template", "-t", default="ctf-writeup", help="Template to use (ctf-writeup, tutorial, opinion)")
     
     # List Posts
     parser_list = subparsers.add_parser("list", help="List all writeups")
@@ -114,7 +131,7 @@ def main():
     args = parser.parse_args()
     
     if args.command == "new":
-        create_new_post(args.title, args.category)
+        create_new_post(args.title, args.category, args.template)
     elif args.command == "list":
         list_posts()
     elif args.command == "build":

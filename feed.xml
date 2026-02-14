@@ -5,6 +5,12 @@
   <link>https://alterpix.github.io</link>
   <description>Cyber Security Writeups & Tutorials</description>
   <item>
+    <title>About Me</title>
+    <link>https://alterpix.github.io/writeups/about.html</link>
+    <description>Who is Alterpix? A passionate cybersecurity enthusiast and penetration tester.</description>
+    <pubDate>2026-02-14</pubDate>
+  </item>
+  <item>
     <title>Test: Interlinking &amp; Obsidian Support</title>
     <link>https://alterpix.github.io/writeups/dummy_links.html</link>
     <description>Testing cross-linking capabilities using Obsidian syntax.</description>
@@ -20,6 +26,12 @@
     <title>Secret Operation Result</title>
     <link>https://alterpix.github.io/writeups/dummy_secret.html</link>
     <description>A report containing sensitive redacted information.</description>
+    <pubDate>2026-02-14</pubDate>
+  </item>
+  <item>
+    <title>Portfolio</title>
+    <link>https://alterpix.github.io/writeups/portfolio.html</link>
+    <description>My professional portfolio, projects, and certifications.</description>
     <pubDate>2026-02-14</pubDate>
   </item>
   <item>
