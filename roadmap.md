@@ -24,6 +24,8 @@ Kita bagi menjadi **4 Fase (Sprint)** agar terukur dan tidak *overwhelming*.
 * [x] Implementasi Live2D Widget (Pio).
 * [x] **Optimasi:** Lazy load script, posisi fixed yang responsive di mobile.
 * [x] **Search System:** Client-side search bar tanpa database (JS).
+* [x] **UI Polish:** Perbaikan kontras warna (Text & Box) agar lebih mudah dibaca.
+* [x] **Bug Fix:** Mencegah double loading pada model Live2D dan konsistensi preferensi user.
 
 
 

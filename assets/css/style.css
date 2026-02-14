@@ -4,7 +4,11 @@
     --primary-color: #00ff41;
     /* Hacker Green */
     --secondary-color: #008f11;
-    --text-color: #e0e0e0;
+    --text-color: #f0f0f0;
+    /* Brighter text per user request */
+    --border-color: #333;
+    /* Default border */
+    --active-border-color: #00ff41;
     --glitch-color-1: #0ff;
     --glitch-color-2: #f0f;
     --font-mono: 'Share Tech Mono', monospace;
@@ -44,34 +48,15 @@ textarea,
 }
 
 body {
-    background:
-        radial-gradient(ellipse at top, rgba(0, 255, 200, 0.05) 0%, transparent 60%),
-        radial-gradient(ellipse at bottom right, rgba(0, 255, 65, 0.08) 0%, transparent 50%),
-        linear-gradient(-45deg, #000000, #001a00, #001a1a, #050505, #003300, #001400, #002600, #000a00);
-    background-size: 100% 100%, 100% 100%, 400% 400%;
-    animation: gradientShift 20s ease infinite;
+    background: #050505;
+    background-image:
+        radial-gradient(ellipse at top, rgba(0, 255, 65, 0.03) 0%, transparent 60%),
+        linear-gradient(to bottom, #000000, #0a0a0a);
+    background-attachment: fixed;
     color: var(--text-color);
     font-family: var(--font-mono);
     line-height: 1.6;
     min-height: 100vh;
-}
-
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 0%, 0% 0%, 0% 50%;
-    }
-
-    33% {
-        background-position: 0% 0%, 0% 0%, 100% 50%;
-    }
-
-    66% {
-        background-position: 0% 0%, 0% 0%, 0% 100%;
-    }
-
-    100% {
-        background-position: 0% 0%, 0% 0%, 0% 50%;
-    }
 }
 
 /* Matrix Background */
@@ -121,10 +106,15 @@ h3 {
 /* Terminal Card (User Profile) */
 .terminal-card {
     background: var(--terminal-bg);
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
-    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.terminal-card:hover {
+    border-color: var(--active-border-color);
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
 }
 
 .terminal-header {
@@ -219,11 +209,14 @@ h3 {
     margin-bottom: 25px;
     display: flex;
     align-items: center;
-    background: rgba(10, 10, 10, 0.8);
-    border: 1px solid #333;
+    background: #0a0a0a;
+    /* Solid background for contrast */
+    border: 1px solid var(--active-border-color);
+    /* Highlighted border */
     padding: 10px 15px;
     border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.15);
+    /* Slightly stronger glow */
 }
 
 .search-icon {
@@ -348,10 +341,20 @@ h3 {
 }
 
 .writeup-group {
-    background: rgba(10, 10, 10, 0.5);
-    border: 1px solid #222;
-    padding: 15px;
+    background: #0d0d0d;
+    /* Darker, solid background */
+    border: 1px solid #333;
+    padding: 20px;
+    /* Slight padding increase */
     border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+    /* Better separation from bg */
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.writeup-group:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
 }
 
 .group-title {
@@ -373,18 +376,23 @@ h3 {
 .writeup-list a {
     display: flex;
     justify-content: space-between;
-    padding: 8px;
-    background: rgba(0, 255, 65, 0.05);
-    border-left: 2px solid transparent;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    /* Subtle bg for list items */
+    border-left: 3px solid transparent;
+    /* Thick border */
     color: var(--text-color);
     text-decoration: none;
     transition: 0.2s;
+    margin-bottom: 5px;
+    /* Spacing between items */
 }
 
 .writeup-list a:hover {
-    background: rgba(0, 255, 65, 0.1);
-    border-left: 2px solid var(--primary-color);
-    padding-left: 12px;
+    background: rgba(0, 255, 65, 0.15);
+    border-left: 3px solid var(--primary-color);
+    padding-left: 15px;
+    color: #fff;
 }
 
 .log-id {

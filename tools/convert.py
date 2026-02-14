@@ -327,9 +327,9 @@ def process_file(input_file):
         <div class="legal-warning">
             <div class="warning-icon">⚠️ WARNING_</div>
             <p>
-                The information provided in this article is for <strong>EDUCATIONAL PURPOSES ONLY</strong>.
-                The author is not responsible for any misuse of the information. 
-                Testing these techniques on systems without explicit permission is <strong>ILLEGAL</strong>.
+                <strong>DISCLAIMER:</strong> Materi ini dibuat semata-mata untuk tujuan <strong>EDUKASI</strong> dan keamanan siber.
+                Penulis tidak bertanggung jawab atas segala bentuk penyalahgunaan informasi yang ada di sini.
+                Menguji teknik ini pada sistem tanpa izin eksplisit adalah tindakan <strong>ILEGAL</strong>.
             </p>
         </div>
         """

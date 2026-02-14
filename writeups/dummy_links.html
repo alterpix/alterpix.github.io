@@ -129,7 +129,7 @@
         }
 
         // Initialize default widget
-        L2Dwidget.init(baseModelConfig);
+        // L2Dwidget.init(baseModelConfig); // Commented out to prevent double-loading. initLive2D handles this.
 
         // Debug Panel Logic
         const debugPanel = document.getElementById('l2d-debug-panel');
@@ -271,12 +271,12 @@
             // Check for saved preference
             const savedTexture = loadPreference('live2d-texture');
 
-            if (savedTexture) {
+            if (savedTexture && modelData) {
                 console.log("Found saved texture preference:", savedTexture);
                 // We need to fetch the base model config to create the dynamic one
                 try {
-                    const response = await fetch('../assets/live2d/pio/model.json');
-                    const baseConfig = await response.json();
+                    // Reuse loaded modelData instead of fetching again
+                    const baseConfig = modelData;
 
                     // Create dynamic config
                     const newModelData = JSON.parse(JSON.stringify(baseConfig));
@@ -348,13 +348,16 @@
         let initAttempts = 0;
         const maxAttempts = 10;
         const retryDelay = 300; // milliseconds
+        let isInitializing = false; // Flag to prevent multiple concurrent initializations
 
         function tryInitializeLive2D() {
+            if (isInitializing) return; // Prevent concurrent calls
             initAttempts++;
 
             // Check if library is fully loaded and ready
             if (typeof L2Dwidget !== 'undefined' && typeof L2Dwidget.init === 'function') {
                 console.log(`Live2D initialized successfully on attempt ${initAttempts}`);
+                isInitializing = true;
                 initLive2D();
             } else if (initAttempts < maxAttempts) {
                 console.log(`Live2D not ready, retrying... (attempt ${initAttempts}/${maxAttempts})`);
@@ -372,9 +375,10 @@
             tryInitializeLive2D();
         }
 
-        // Fallback: ensure initialization on window load (all external resources loaded)
+        // Fallback: ensure initialization on window load
         window.addEventListener('load', () => {
-            if (initAttempts === 0 || (typeof L2Dwidget !== 'undefined' && !document.getElementById('live2d-widget'))) {
+            // Check if already initialized (using isInitializing flag) OR check DOM presence
+            if (!isInitializing && (initAttempts === 0 || (typeof L2Dwidget !== 'undefined' && !document.getElementById('live2d-widget')))) {
                 console.log("Triggering Live2D init from window.onload");
                 tryInitializeLive2D();
             }
