@@ -4,22 +4,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ALTERPIX | Cyber Security Portfolio & Writeups</title>
+  <title>ALTERPIX | Cyber Security Portfolio, CTF Writeups & Malware Analysis</title>
 
   <!-- SEO & Social Media -->
   <link rel="canonical" href="https://alterpix.github.io/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://alterpix.github.io/">
-  <meta property="og:title" content="ALTERPIX | Cyber Security Portfolio">
+  <meta property="og:title" content="ALTERPIX | Cyber Security Portfolio & Writeups">
   <meta property="og:description"
-    content="Cyber Security Portfolio & Writeups. Penetration Testing, CTF Solutions, and Malware Analysis.">
+    content="Explore Alterpix's expert Cyber Security Portfolio. Featuring in-depth Penetration Testing reports, detailed CTF Solutions, Malware Analysis techniques, and Red Team insights.">
   <meta property="og:image" content="https://alterpix.github.io/assets/img/og_default.png">
 
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://alterpix.github.io/">
-  <meta property="twitter:title" content="ALTERPIX | Cyber Security Portfolio">
+  <meta property="twitter:title" content="ALTERPIX | Cyber Security Portfolio & Writeups">
   <meta property="twitter:description"
-    content="Cyber Security Portfolio & Writeups. Penetration Testing, CTF Solutions, and Malware Analysis.">
+    content="Explore Alterpix's expert Cyber Security Portfolio. Featuring in-depth Penetration Testing reports, detailed CTF Solutions, Malware Analysis techniques, and Red Team insights.">
   <meta property="twitter:image" content="https://alterpix.github.io/assets/img/og_default.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
@@ -28,7 +28,25 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <meta name="description"
-    content="Cyber Security Portfolio & Writeups. Penetration Testing, CTF Solutions, and Malware Analysis.">
+    content="Explore Alterpix's expert Cyber Security Portfolio. Featuring in-depth Penetration Testing reports, detailed CTF Solutions, Malware Analysis techniques, and Red Team insights.">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Alterpix",
+      "url": "https://alterpix.github.io/",
+      "image": "https://alterpix.github.io/assets/img/og_default.png",
+      "jobTitle": "Penetration Tester",
+      "description": "Cyber Security Specialist focusing on Offensive Security, CTF, and Malware Analysis.",
+      "sameAs": [
+        "https://github.com/alterpix",
+        "https://linkedin.com/in/alterpix",
+        "https://twitter.com/alterpix"
+      ]
+    }
+  </script>
 </head>
 
 <body>
@@ -56,6 +74,13 @@
           <p>> Mission: <strong>Protect digital assets at all costs.</strong></p>
           <br>
           <p class="comment">// I break code to make it stronger.</p>
+
+          <div class="social-links" style="margin-top: 15px; border-top: 1px dashed #333; padding-top: 10px;">
+            <a href="https://github.com/alterpix" class="social-btn">[ GITHUB ]</a>
+            <a href="#" class="social-btn">[ LINKEDIN ]</a>
+            <a href="#" class="social-btn">[ TWITTER ]</a>
+            <a href="#" class="social-btn">[ YOUTUBE ]</a>
+          </div>
         </div>
       </div>
     </section>
@@ -264,7 +289,20 @@
       }
 
       // Event Listeners
-      searchInput.addEventListener('input', filterContent); // 'input' is more responsive than 'keyup'
+      // searchInput.addEventListener('input', filterContent); // Replaced with debounce
+
+      // Debounce Function for Performance (INP improvement)
+      function debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+          const context = this;
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func.apply(context, args), wait);
+        };
+      }
+
+      const debouncedFilter = debounce(filterContent, 300);
+      searchInput.addEventListener('input', debouncedFilter);
     });
   </script>
   <script src="assets/js/main.js"></script>

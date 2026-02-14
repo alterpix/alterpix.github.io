@@ -782,3 +782,75 @@ footer {
 .hidden-by-pagination {
     display: none;
 }
+
+/* =========================================
+   Mobile Responsiveness (Advanced SEO)
+   ========================================= */
+@media (max-width: 768px) {
+    .container {
+        margin: 60px auto 20px;
+        padding: 0 15px;
+    }
+
+    /* Glitch Title Size Adjustment */
+    .glitch-title {
+        font-size: 1.5rem;
+        word-break: break-word;
+    }
+
+    .site-header {
+        margin-top: 30px;
+    }
+
+    /* Grid Layout - Single Column on Mobile */
+    .writeup-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Terminal Body Scroll for Code Blocks */
+    .terminal-body {
+        overflow-x: auto;
+        font-size: 0.9rem;
+    }
+
+    /* Filters Stack */
+    .search-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #searchInput {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .category-filters {
+        justify-content: center;
+    }
+
+    /* Typography Readability */
+    body {
+        font-size: 16px;
+        /* Minimum legible size */
+    }
+
+    h2.section-title {
+        font-size: 1.2rem;
+    }
+}
+
+/* Social Buttons */
+.social-btn {
+    color: #888;
+    text-decoration: none;
+    margin-right: 10px;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.social-btn:hover {
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
