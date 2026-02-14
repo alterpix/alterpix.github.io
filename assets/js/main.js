@@ -3,7 +3,7 @@
     const ctx = canvas.getContext('2d');
 
     // Optimization: Render at lower resolution for "retro" feel and performance
-    const scaleFactor = 4; // 1 = full res, 4 = quarter res (Very fast, very retro)
+    const scaleFactor = 2; // 1 = full res, 2 = half res, etc. 
 
     function resizeCanvas() {
         canvas.width = window.innerWidth / scaleFactor;
