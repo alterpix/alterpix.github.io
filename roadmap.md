@@ -31,31 +31,31 @@ Kita bagi menjadi **4 Fase (Sprint)** agar terukur dan tidak *overwhelming*.
 
 ---
 
-### 🛡️ Fase 2: Konten & Legalisasi (Minggu 3-4)
+### 🛡️ Fase 2: Konten & Legalisasi (Minggu 3-4) [SELESAI]
 
 **Goal:** Mengisi website dengan konten "daging" yang aman secara hukum.
 
 1. **Setup Legal & Etika (CRITICAL)**
-* [ ] **Disclaimer Banner:** Buat komponen HTML yang otomatis muncul di atas setiap artikel kategori "Hacking/CTF".
+* [x] **Disclaimer Banner:** Buat komponen HTML yang otomatis muncul di atas setiap artikel kategori "Hacking/CTF".
 > *"Materi ini untuk edukasi. Penulis tidak bertanggung jawab atas penyalahgunaan informasi."*
 
 
-* [ ] **Sensor Data:** Review ulang *writeup* lama, pastikan IP Address target asli, username, atau data sensitif sudah di-sensor/blur.
+* [x] **Sensor Data:** Review ulang *writeup* lama, pastikan IP Address target asli, username, atau data sensitif sudah di-sensor/blur.
 
 
 2. **Strategi Konten (Writeup)**
-* [ ] **Kategorisasi:** Pisahkan konten jadi:
+* [x] **Kategorisasi:** Pisahkan konten jadi:
 * *Writeup CTF* (Solusi teknis to-the-point).
 * *Tutorial Pemula* (Penjelasan panjang lebar, misal: "Cara Install Kali Linux").
 * *Opini/Karir* (Misal: "Roadmap jadi Pentester 2026").
 
 
-* [ ] **Format Markdown Standar:** Buat template `.md` agar setiap nulis strukturnya konsisten (H1, H2, Code Block).
+* [x] **Format Markdown Standar:** Buat template `.md` agar setiap nulis strukturnya konsisten (H1, H2, Code Block).
 
 
 3. **Halaman Pendukung**
-* [ ] **About Me:** Siapa Alterpix? Sertifikasi apa yang dipunya? (Meningkatkan *E-E-A-T* di mata Google).
-* [ ] **Portofolio:** Link ke akun TryHackMe, HackTheBox, atau Bug Bounty profile.
+* [x] **About Me:** Siapa Alterpix? Sertifikasi apa yang dipunya? (Meningkatkan *E-E-A-T* di mata Google).
+* [x] **Portofolio:** Link ke akun TryHackMe, HackTheBox, atau Bug Bounty profile.
 
 
 
