@@ -26,7 +26,9 @@ def create_new_post(title, category, template_name="ctf-writeup"):
             
         # Replace placeholders
         template = template.replace("{title}", title)
+        # Handle both old {today} and new dummy date for compatibility
         template = template.replace("{today}", today)
+        template = template.replace("1970-01-01", today)
         template = template.replace("{category}", category)
         template = template.replace("{author}", "Alterpix") # Default author
         template = template.replace("{difficulty}", "Easy")

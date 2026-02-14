@@ -1,6 +1,0 @@
-exclude:
-  - templates/
-  - tools/
-  - README.md
-  - LICENSE
-  - requirements.txt

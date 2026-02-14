@@ -1,6 +1,6 @@
 ---
 title: "{title}"
-date: "{today}"
+date: "1970-01-01"
 category: "Tutorial"
 tags: "Tutorial, {topic}"
 author: "{author}"

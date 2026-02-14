@@ -1,6 +1,6 @@
 ---
 title: "{title}"
-date: "{today}"
+date: "1970-01-01"
 category: "Writeup"
 tags: "CTF, HTB/THM, {difficulty}, {os}"
 author: "{author}"
