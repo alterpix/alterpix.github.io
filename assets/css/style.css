@@ -815,13 +815,25 @@ footer {
 
     /* Filters Stack */
     .search-container {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        /* Keep row layout */
+        align-items: center;
+        padding: 10px;
+        /* Reduced padding */
+    }
+
+    .search-icon {
+        margin-right: 10px;
+        /* Reduced margin */
+        font-size: 1rem;
     }
 
     #searchInput {
-        width: 100%;
-        margin-bottom: 10px;
+        width: auto;
+        flex: 1;
+        /* Take remaining space */
+        font-size: 1rem;
+        margin-bottom: 0;
     }
 
     .category-filters {
