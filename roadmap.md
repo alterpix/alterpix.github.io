@@ -53,9 +53,7 @@ Kita bagi menjadi **4 Fase (Sprint)** agar terukur dan tidak *overwhelming*.
 * [x] **Format Markdown Standar:** Buat template `.md` agar setiap nulis strukturnya konsisten (H1, H2, Code Block).
 
 
-3. **Halaman Pendukung**
-* [x] **About Me:** Siapa Alterpix? Sertifikasi apa yang dipunya? (Meningkatkan *E-E-A-T* di mata Google).
-* [x] **Portofolio:** Link ke akun TryHackMe, HackTheBox, atau Bug Bounty profile.
+
 
 
 

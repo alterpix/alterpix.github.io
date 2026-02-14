@@ -433,9 +433,6 @@ def generate_index_list(posts):
     sorted_cats = sorted(groups.keys())
     
     for cat in sorted_cats:
-        if cat == "PAGE": # Exclude static pages from the feed
-            continue
-            
         html_output += f'<div class="writeup-group">\n'
         html_output += f'  <h3 class="group-title">:: {cat} ::</h3>\n'
         html_output += f'  <ul class="writeup-list">\n'
