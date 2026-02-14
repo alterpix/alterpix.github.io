@@ -11,6 +11,12 @@
     <pubDate>2026-02-14</pubDate>
   </item>
   <item>
+    <title>Tutorial: Advanced Python Scripting for Pentesters</title>
+    <link>https://alterpix.github.io/writeups/dummy_another_tutorial.html</link>
+    <description>Lanjutan dari tutorial sebelumnya, kita akan membahas teknik threading dan async di Python untuk mempercepat scanning.</description>
+    <pubDate>2026-02-15</pubDate>
+  </item>
+  <item>
     <title>Writeup: Capture The Flag - HackTheBox 'Lame</title>
     <link>https://alterpix.github.io/writeups/dummy_htb_lame.html</link>
     <description>Writeup singkat untuk mesin Lame di HackTheBox. Mesin legendaris yang mengajarkan kita tentang Samba Vulnerability (CVE-2007-2447).</description>

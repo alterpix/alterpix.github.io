@@ -129,7 +129,19 @@ def convert_to_html(md_content):
     <div class="terminal-body">{code_block}</div>
 </div>"""
 
-    return re.sub(pattern, replacement, html, flags=re.DOTALL)
+    html = re.sub(pattern, replacement, html, flags=re.DOTALL)
+    
+    # Secure External Links (Reverse SEO / Tabnabbing Protection)
+    def secure_links(match):
+        url = match.group(1)
+        text = match.group(2)
+        if url.startswith("http") and "alterpix.github.io" not in url:
+             return f'<a href="{url}" target="_blank" rel="noopener noreferrer">{text}</a>'
+        return match.group(0) # Internal or relative
+        
+    final_html = re.sub(r'<a href="(.*?)">(.*?)</a>', secure_links, html)
+
+    return final_html
 
 def generate_seo_tags(meta, filename, first_image=None):
     """Generates HTML meta tags for SEO."""
@@ -412,121 +424,97 @@ def generate_rss(posts):
         f.write(rss)
     print(f"[+] Generated feed.xml with {len(posts)} posts.")
 
-def generate_index_list(posts):
-    """Generates the HTML list of writeups for index.html."""
+import json
+
+def generate_json_index(posts):
+    """Generates posts.json for client-side rendering."""
     
     # Sort posts by date (newest first)
     posts.sort(key=lambda x: x.get('date', '0000-00-00'), reverse=True)
     
-    # Group by Category
-    groups = {}
+    # Add ID hash if not present
+    import hashlib
     for post in posts:
-        cat = post.get('category', 'Uncategorized').upper()
-        if cat not in groups:
-            groups[cat] = []
-        groups[cat].append(post)
-    
-    html_output = ""
-    
-    # Sort categories to ensure consistent order (e.g., WRITEUP first, then TUTORIAL)
-    # You might want custom sorting here, but alphabetical is a good start
-    sorted_cats = sorted(groups.keys())
-    
-    for cat in sorted_cats:
-        html_output += f'<div class="writeup-group">\n'
-        html_output += f'  <h3 class="group-title">:: {cat} ::</h3>\n'
-        html_output += f'  <ul class="writeup-list">\n'
+        if 'id' not in post:
+            post['id'] = hashlib.md5(post['title'].encode()).hexdigest()[:4].upper()
+            
+        # Ensure relative URL
+        if post['url'].startswith(BASE_URL):
+            post['url'] = post['url'].replace(BASE_URL + "/", "")
+            
+    output_path = "posts.json"
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(posts, f, indent=2)
         
-        for post in groups[cat]:
-            url = post['url'].replace(BASE_URL + "/", "") # Relative path from root
-            description = post.get('description', '')[:50] + '...' if post.get('description') else ''
-            
-            # Simple ID generation based on filename hash or counter could be better, 
-            # but for now let's use a truncated hash of the title for a "cool" ID
-            import hashlib
-            post_id = hashlib.md5(post['title'].encode()).hexdigest()[:4].upper()
-            
-            html_output += f'    <li>\n'
-            html_output += f'      <a href="{url}">\n'
-            html_output += f'        <span class="log-id">#{post_id}</span>\n'
-            html_output += f'        <span class="log-title">{post["title"]}</span>\n'
-            html_output += f'        <span class="log-status">[{post["date"]}]</span>\n'
-            html_output += f'      </a>\n'
-            html_output += f'    </li>\n'
-            
-        html_output += f'  </ul>\n'
-        html_output += f'</div>\n'
-        
-    # Inject into index.html
+    print(f"[+] Generated {output_path} with {len(posts)} posts.")
+
+def generate_noscript_fallback(posts):
+    """Generates static HTML links inside <noscript> for SEO."""
+    
+    html_output = "<h3>:: STATIC_DB_ACCESS ::</h3><ul>"
+    
+    # Sort by date
+    posts.sort(key=lambda x: x.get('date', '0000-00-00'), reverse=True)
+    
+    for post in posts:
+        url = post['url'].replace(BASE_URL + "/", "")
+        title = post['title']
+        date = post.get('date', '----')
+        html_output += f'<li><a href="{url}">[{date}] {title}</a></li>\n'
+    
+    html_output += "</ul>"
+    
     index_path = "index.html"
     if os.path.exists(index_path):
         with open(index_path, "r", encoding="utf-8") as f:
-            index_content = f.read()
-        
-        # Regex to replace content between a placeholder or just replace a specific marker
-        # We used <!-- DYNAMIC_WRITEUPS_LIST -->
-        
-        # Be careful not to wipe out the marker so we can update again
-        marker = "<!-- DYNAMIC_WRITEUPS_LIST -->"
-        if marker in index_content:
-            # We want to replace the marker AND its generated content if we ran this before?
-            # actually, simplest way is: keep the marker, and replace everything after it until end of container?
-            # Or just Replace the marker with "Marker + Content".
-            # But subsequent runs would append.
-            # State management is hard with simple replace.
-            # Best approach for this script: 
-            # 1. Read index.html lines
-            # 2. Find start marker.
-            # 3. Find end of the container? Or just assume we replace the marker with formatted content WRAPPED in markers?
+            content = f.read()
             
-            # Let's use a start and end marker strategy for robustness in future
-            # But user currently just has one marker.
-            # Let's simple-replace the marker with a block that includes the marker. 
+        marker = "<!-- STATIC_LINKS_PLACEHOLDER -->"
+        if marker in content:
+            new_content = content.replace(marker, html_output)
+            # Or regex replace if we already ran it, but for now simple replacement is fine 
+            # as long as we don't need to update it continuously without a wrapper.
+            # actually, let's use a wrapper strategy like before to be safe for re-runs.
             
-            # Regex to find existing generated block if any
-            pattern = re.compile(f'{re.escape(marker)}.*?(?=<div class="scanline">|<footer>|</section>)', re.DOTALL)
-            # This is risky. 
+            # Better strategy: Regex replace the CONTENT of <noscript>...<div class="static-list">...</div>
+            # But the user asked for simple addition. 
+            # To allow updates, let's replace the placeholder with "<!-- STATIC_START --> content <!-- STATIC_END -->"
+            # and verify logical branching.
             
-            # Safer: Read index.html, split by marker. 
-            # But we need to define where the dynamic content ENDS.
-            # Let's assume the user wants us to manage the *entire* inner HTML of `.writeup-grid`
-            # For now, I will start by just replacing the marker with the content. 
-            # NOTE: This means subsequent runs won't work unless I add a specific End Marker.
-            pass
-    
-    # RE-THINK: To support re-running, I should wrap the injected content in comments.
-    # <!-- DYNAMIC_START --> ... content ... <!-- DYNAMIC_END -->
-    # The user manual step put <!-- DYNAMIC_WRITEUPS_LIST -->.
-    # I will replace `<!-- DYNAMIC_WRITEUPS_LIST -->` with:
-    # `<!-- DYNAMIC_WRITEUPS_LIST -->\n<!-- AUTOGENERATED_START -->\n{html_output}\n<!-- AUTOGENERATED_END -->`
-    
-    # And on subsequent runs, I will regex replace `<!-- AUTOGENERATED_START -->.*?<!-- AUTOGENERATED_END -->`
-    
+            # However, I removed the previous simpler approach. Let's just use the placeholder replacement
+            # but wrapping it so we can find it again?
+            # Actually, `convert.py` is often run multiple times. 
+            # If I replace the placeholder, it's gone.
+            # I need `<!-- STATIC_LINKS_PLACEHOLDER -->` to PERSIST or act as a boundary.
+            
+            pass 
+            
+    # Re-impl with robust replacement
     if os.path.exists(index_path):
         with open(index_path, "r", encoding="utf-8") as f:
-            index_content = f.read()
+            content = f.read()
             
-        start_marker = "<!-- DYNAMIC_WRITEUPS_LIST -->"
-        auto_start = "<!-- AUTOGENERATED_start -->"
-        auto_end = "<!-- AUTOGENERATED_end -->"
+        start_marker = "<!-- STATIC_LINKS_START -->"
+        end_marker = "<!-- STATIC_LINKS_END -->"
+        placeholder = "<!-- STATIC_LINKS_PLACEHOLDER -->"
         
-        new_block = f"{start_marker}\n{auto_start}\n{html_output}\n{auto_end}"
+        injection = f"{start_marker}\n{html_output}\n{end_marker}"
         
-        if auto_start in index_content:
-            # Update existing block
-            pattern = re.compile(f"{re.escape(auto_start)}.*?{re.escape(auto_end)}", re.DOTALL)
-            new_index_content = re.sub(pattern, f"{auto_start}\n{html_output}\n{auto_end}", index_content)
-        elif start_marker in index_content:
-            # First run, replace the placeholder
-            new_index_content = index_content.replace(start_marker, new_block)
+        # Regex for existing block
+        pattern = re.compile(f"{re.escape(start_marker)}.*?{re.escape(end_marker)}", re.DOTALL)
+        
+        if pattern.search(content):
+            new_content = re.sub(pattern, injection, content)
+            print("[+] Updated existing noscript fallback.")
+        elif placeholder in content:
+            new_content = content.replace(placeholder, injection)
+            print("[+] Injected new noscript fallback.")
         else:
-            print("[-] Warning: Placeholder <!-- DYNAMIC_WRITEUPS_LIST --> not found in index.html")
+            print("[-] Warning: No placeholder found for noscript fallback.")
             return
 
         with open(index_path, "w", encoding="utf-8") as f:
-            f.write(new_index_content)
-        print("[+] Updated index.html with latest writeups.")
-
+            f.write(new_content)
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -543,4 +531,5 @@ if __name__ == "__main__":
     # Generate Indexes
     generate_sitemap(posts_metadata)
     generate_rss(posts_metadata)
-    generate_index_list(posts_metadata)
+    generate_json_index(posts_metadata)
+    generate_noscript_fallback(posts_metadata)

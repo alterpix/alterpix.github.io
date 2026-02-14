@@ -577,6 +577,7 @@ footer {
         font-size: 0.7rem;
     }
 }
+
 /* Writeup Metadata */
 .writeup-meta {
     display: flex;
@@ -606,4 +607,117 @@ footer {
 
 .meta-value {
     color: #e0e0e0;
+}
+
+/* --- SEARCH & FILTERS --- */
+.search-container {
+    margin-bottom: 20px;
+    /* Reduced margin since filters are now separate */
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+}
+
+
+
+.search-icon {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-right: 15px;
+    animation: blink 1s infinite;
+}
+
+#searchInput {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    outline: none;
+}
+
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-top: 5px;
+    margin-bottom: 20px;
+}
+
+.cyber-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #888;
+    user-select: none;
+    transition: color 0.3s;
+}
+
+.cyber-checkbox:hover {
+    color: var(--primary-color);
+}
+
+.cyber-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    height: 16px;
+    width: 16px;
+    background-color: transparent;
+    border: 1px solid #555;
+    margin-right: 8px;
+    position: relative;
+    display: inline-block;
+}
+
+.cyber-checkbox input:checked~.checkmark {
+    background-color: rgba(0, 255, 65, 0.2);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+}
+
+.cyber-checkbox input:checked~.checkmark:after {
+    content: "";
+    position: absolute;
+    display: block;
+    left: 4px;
+    top: 0px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--primary-color);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Show More Button */
+.show-more-btn {
+    background: transparent;
+    border: 1px dashed #555;
+    color: #888;
+    font-family: var(--font-mono);
+    padding: 5px 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.show-more-btn:hover {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    background: rgba(0, 255, 65, 0.05);
+}
+
+.hidden-by-pagination {
+    display: none;
 }

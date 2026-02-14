@@ -12,6 +12,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://alterpix.github.io/writeups/dummy_another_tutorial.html</loc>
+    <lastmod>2026-02-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://alterpix.github.io/writeups/dummy_htb_lame.html</loc>
     <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
