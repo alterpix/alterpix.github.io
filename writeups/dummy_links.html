@@ -4,8 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[PAGE_TITLE]</title>
-    <!-- SEO_TAGS_PLACEHOLDER -->
+    <title>WRITEUP_LOG | Test: Interlinking & Obsidian Support</title>
+    
+    <meta name="description" content="Testing cross-linking capabilities using Obsidian syntax.">
+    <link rel="canonical" href="https://alterpix.github.io/writeups/dummy_links.html">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://alterpix.github.io/writeups/dummy_links.html">
+    <meta property="og:title" content="Test: Interlinking &amp; Obsidian Support">
+    <meta property="og:description" content="Testing cross-linking capabilities using Obsidian syntax.">
+    <meta property="og:image" content="https://alterpix.github.io/assets/img/og_default.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://alterpix.github.io/writeups/dummy_links.html">
+    <meta property="twitter:title" content="Test: Interlinking &amp; Obsidian Support">
+    <meta property="twitter:description" content="Testing cross-linking capabilities using Obsidian syntax.">
+    <meta property="twitter:image" content="https://alterpix.github.io/assets/img/og_default.png">
+    
     <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
@@ -26,17 +43,25 @@
     <main class="container">
         <article class="writeup-content">
             <header>
-                <h1>[WRITEUP TITLE HERE]</h1>
+                <h1>Test: Interlinking & Obsidian Support</h1>
                 <div class="writeup-meta">
-                    <span>DATE: [YYYY-MM-DD]</span>
+                    <span>DATE: 2026-02-14</span>
                     <span>AUTHOR: Alterpix</span>
-                    <span>CATEGORY: [WEB/NETWORK/CTF]</span>
+                    <span>CATEGORY: Meta</span>
                 </div>
             </header>
 
             <div class="writeup-body">
-                <!-- DISCLAIMER_PLACEHOLDER -->
-                {{ CONTENT }}
+                
+                <h2>Testing Links</h2>
+<p>This is a test of the new linking capabilities.</p>
+<ol>
+<li><strong>WikiLink to Lame</strong>: <a href="dummy_htb_lame.html" class="internal-link">dummy_htb_lame</a></li>
+<li><strong>WikiLink with Alias</strong>: <a href="dummy_python_setup.html" class="internal-link">Panduan Setup Python</a></li>
+<li><strong>Standard MD Link</strong>: <a href="dummy_python_setup.html">Halaman Setup Python</a></li>
+<li><strong>External Link</strong>: <a href="https://google.com">Google</a> (Should not change)</li>
+</ol>
+<p>If this works, clicking the links above should take you to the correct HTML pages.</p>
             </div>
 
             <br>

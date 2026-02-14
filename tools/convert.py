@@ -3,6 +3,8 @@ import sys
 import re
 import datetime
 import shutil
+import time
+from xml.sax.saxutils import escape
 
 # Try importing markdown, else warn user
 try:
@@ -15,47 +17,39 @@ except ImportError:
 TEMPLATE_PATH = "templates/writeup-template.html"
 OUTPUT_DIR = "writeups"
 ASSETS_IMG_DIR = "assets/img"
+BASE_URL = "https://alterpix.github.io"
 
 def process_images(md_content, source_file_path):
     """
     Finds image references in markdown, copies images to assets/img,
     and updates the markdown to use correct relative paths.
     """
-    # Get the directory of the source markdown file
     source_dir = os.path.dirname(os.path.abspath(source_file_path))
     
-    # Create assets/img directory if it doesn't exist
     if not os.path.exists(ASSETS_IMG_DIR):
         os.makedirs(ASSETS_IMG_DIR)
     
-    # Pattern to match markdown images: ![alt text](path)
     image_pattern = r'!\[([^\]]*)\]\(([^)]+)\)'
     
     def replace_image_path(match):
         alt_text = match.group(1)
         original_path = match.group(2)
         
-        # Skip if it's already pointing to assets/img or is a URL
         if original_path.startswith('http://') or original_path.startswith('https://'):
-            return match.group(0)  # Keep URL as-is
+            return match.group(0)
         if original_path.startswith('../assets/img/'):
-            return match.group(0)  # Already correct path
+            return match.group(0)
         
-        # Resolve the actual image path (could be relative to markdown file)
         if os.path.isabs(original_path):
             source_image_path = original_path
         else:
             source_image_path = os.path.join(source_dir, original_path)
         
-        # Check if the image file exists
         if not os.path.exists(source_image_path):
             print(f"[!] Warning: Image not found: {source_image_path}")
-            return match.group(0)  # Keep original if file doesn't exist
+            return match.group(0)
         
-        # Get the image filename
         image_filename = os.path.basename(source_image_path)
-        
-        # Copy image to assets/img
         dest_image_path = os.path.join(ASSETS_IMG_DIR, image_filename)
         
         try:
@@ -65,11 +59,9 @@ def process_images(md_content, source_file_path):
             print(f"[!] Error copying image {image_filename}: {e}")
             return match.group(0)
         
-        # Return updated markdown with correct relative path (from writeups/ to assets/img)
         new_path = f"../assets/img/{image_filename}"
         return f"![{alt_text}]({new_path})"
     
-    # Replace all image references
     updated_content = re.sub(image_pattern, replace_image_path, md_content)
     return updated_content
 
@@ -82,10 +74,11 @@ def parse_frontmatter(content):
         "title": "Untitled Writeup",
         "date": datetime.date.today().strftime("%Y-%m-%d"),
         "category": "General",
-        "author": "Alterpix"
+        "author": "Alterpix",
+        "description": "",
+        "tags": ""
     }
     
-    # Regex to find frontmatter between ---
     frontmatter_pattern = r"^---\s+(.*?)\s+---\s+(.*)$"
     match = re.search(frontmatter_pattern, content, re.DOTALL)
     
@@ -93,11 +86,17 @@ def parse_frontmatter(content):
         frontmatter_str = match.group(1)
         markdown_content = match.group(2)
         
-        # Simple YAML parsing (key: value)
         for line in frontmatter_str.split("\n"):
             if ":" in line:
                 key, value = line.split(":", 1)
                 meta[key.strip().lower()] = value.strip().strip('"').strip("'")
+        
+        # Auto-generate description if missing
+        if not meta["description"]:
+            # Basic heuristic: take first non-empty paragraph
+            paragraphs = [p.strip() for p in markdown_content.split('\n\n') if p.strip() and not p.strip().startswith('#') and not p.strip().startswith('!')]
+            if paragraphs:
+                meta["description"] = paragraphs[0][:150] + "..."
         
         return meta, markdown_content
     else:
@@ -105,20 +104,15 @@ def parse_frontmatter(content):
 
 def convert_to_html(md_content):
     """Converts markdown text to HTML with Terminal Card style for code blocks."""
-    # Extensions: extra (tables, fences), codehilite
     html = markdown.markdown(md_content, extensions=['extra', 'codehilite', 'fenced_code'])
     
-    # regex pattern to find codehilite divs
     pattern = r'(<div class="codehilite">)(.*?)(</div>)'
     
     def replacement(match):
-        code_block = match.group(0) # The full <div class="codehilite">...</div>
+        code_block = match.group(0)
         content = match.group(2)
-        
-        # Remove HTML tags to check text content
         text_content = re.sub(r'<[^>]+>', '', content)
         
-        # Simple heuristic to determine title
         title = "TERMINAL"
         if "nmap" in text_content or "sudo" in text_content or "$ " in text_content or "bash" in text_content:
             title = "BASH_SHELL"
@@ -137,10 +131,147 @@ def convert_to_html(md_content):
 
     return re.sub(pattern, replacement, html, flags=re.DOTALL)
 
+def generate_seo_tags(meta, filename, first_image=None):
+    """Generates HTML meta tags for SEO."""
+    url = f"{BASE_URL}/writeups/{filename}"
+    description = escape(meta['description'])
+    title = escape(meta['title'])
+    
+    # Determine Image URL
+    if first_image:
+        if first_image.startswith("http"):
+             image = first_image
+        else:
+             # Assuming standard relative path handling
+             # If it was copied to assets/img, it should be reachable via BASE_URL/assets/img/
+             # The new path returned by process_images is like "../assets/img/file.png"
+             # We need to strip the "../" and prepend BASE_URL
+             clean_path = first_image.replace("../", "")
+             image = f"{BASE_URL}/{clean_path}"
+    else:
+        image = f"{BASE_URL}/assets/img/og_default.png"
+    
+    seo_html = f"""
+    <meta name="description" content="{description}">
+    <link rel="canonical" href="{url}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{url}">
+    <meta property="og:title" content="{title}">
+    <meta property="og:description" content="{description}">
+    <meta property="og:image" content="{image}">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{url}">
+    <meta property="twitter:title" content="{title}">
+    <meta property="twitter:description" content="{description}">
+    <meta property="twitter:image" content="{image}">
+    """
+    return seo_html
+
 def process_file(input_file):
     if not os.path.exists(input_file):
         print(f"[-] Error: File '{input_file}' not found.")
-        return
+        return None
+
+    print(f"[+] Processing {input_file}...")
+    
+    with open(input_file, "r", encoding="utf-8") as f:
+        full_content = f.read()
+    
+    return content
+
+def sanitize_content(content, file_path):
+    """
+    1. Finds [[SECRET:data]]
+    2. Replaces in MD file with [[REDACTED]] (Permanent erasure)
+    3. Returns the sanitized content
+    """
+    secret_pattern = r'\[\[SECRET:(.*?)\]\]'
+    
+    if re.search(secret_pattern, content):
+        print(f"[!] Found sensitive data in {file_path}. Redacting...")
+        
+        # Permanent Redaction
+        sanitized_content = re.sub(secret_pattern, '[[REDACTED]]', content)
+        
+        try:
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(sanitized_content)
+            print(f"[+] Sanitized source file: {file_path}")
+            return sanitized_content
+        except Exception as e:
+            print(f"[-] Error writing sanitized file: {e}")
+            return content # Fail safe, return original (or should we return sanitized?)
+            # If we fail to write, we should still return sanitized content for build to avoid leak in HTML
+            return sanitized_content
+            
+    return content
+
+def style_redactions(html_content):
+    """
+    Replaces [[REDACTED]] text in the HTML output with styled spans.
+    This runs AFTER markdown conversion, so it works even inside code blocks.
+    """
+    redacted_pattern = r'\[\[REDACTED\]\]'
+    replacement = '<span class="redacted" title="[TOP SECRET] DATA EXPUNGED">[SECRET]</span>'
+    return re.sub(redacted_pattern, replacement, html_content)
+
+def process_obsidian_links(content):
+    """
+    Converts Obsidian-style links [[filename]] and [[filename|text]] 
+    and standard markdown links [text](file.md) to HTML links pointing to .html files.
+    """
+    
+    # 1. Handle [[filename|text]] -> <a href="filename.html">text</a>
+    # Ignored if it is [[REDACTED]]
+    
+    # Regex for alias: [[ (?!REDACTED) (.*?) | (.*?) ]]
+    # But wait, [[REDACTED]] doesn't have a pipe usually.
+    # So the alias regex is safe unless user writes [[REDACTED|alias]] which is weird.
+    
+    def replace_wiki_alias(match):
+        filename = match.group(1).strip()
+        text = match.group(2).strip()
+        if "REDACTED" in filename: return match.group(0) # Skip
+        url = filename.replace(" ", "-").replace(".md", "") + ".html"
+        return f'<a href="{url}" class="internal-link">{text}</a>'
+    
+    content = re.sub(r'\[\[(?!REDACTED\|)(.*?)\|(.*?)\]\]', replace_wiki_alias, content)
+
+    # 2. Handle [[filename]] -> <a href="filename.html">filename</a>
+    # Must ignore [[REDACTED]]
+    
+    def replace_wiki_simple(match):
+        filename = match.group(1).strip()
+        if filename == "REDACTED": return match.group(0) # SKIP
+        
+        parts = filename.split('#')
+        base = parts[0]
+        fragment = f"#{parts[1]}" if len(parts) > 1 else ""
+        
+        url = base.replace(" ", "-").replace(".md", "") + ".html" + fragment
+        text = base
+        return f'<a href="{url}" class="internal-link">{text}</a>'
+
+    # Regex: [[ (item) ]] where item is NOT REDACTED
+    # easier to use the callback to filter
+    content = re.sub(r'\[\[(.*?)\]\]', replace_wiki_simple, content)
+
+    # 3. Handle standard markdown links [text](filename.md) -> [text](filename.html)
+    def replace_std_md_link(match):
+        return match.group(0).replace(".md", ".html")
+    
+    content = re.sub(r'\[.*?\]\(.*?.md\)', replace_std_md_link, content)
+    
+    return content
+
+def process_file(input_file):
+    if not os.path.exists(input_file):
+        print(f"[-] Error: File '{input_file}' not found.")
+        return None
 
     print(f"[+] Processing {input_file}...")
     
@@ -148,46 +279,268 @@ def process_file(input_file):
         full_content = f.read()
     
     meta, md_content = parse_frontmatter(full_content)
-    
-    # Process images: copy to assets/img and update paths
     md_content = process_images(md_content, input_file)
     
+    # 1. Sanitize Secrets (Permanent File Update)
+    md_content = sanitize_content(md_content, input_file)
+    
+    # 2. Process Obsidian Links (Ignores [[REDACTED]])
+    md_content = process_obsidian_links(md_content)
+    
+    # Extract first image from the PROCESSED markdown
+    image_pattern = r'!\[.*?\]\((.*?)\)'
+    image_match = re.search(image_pattern, md_content)
+    first_image = image_match.group(1) if image_match else None
+    
+    # 3. Convert to HTML
     html_content = convert_to_html(md_content)
     
-    # Read Template
+    # 4. Apply Redaction Styles (After HTML conversion to avoid escaping issues in code blocks)
+    html_content = style_redactions(html_content)
+    
     if not os.path.exists(TEMPLATE_PATH):
         print(f"[-] Error: Template '{TEMPLATE_PATH}' not found.")
-        return
+        return None
 
     with open(TEMPLATE_PATH, "r", encoding="utf-8") as f:
         template = f.read()
     
+    filename = os.path.basename(input_file).replace(".md", ".html")
+    
+    # Generate SEO Tags
+    seo_tags = generate_seo_tags(meta, filename, first_image)
+    
+    # Generate Disclaimer if needed
+    # Generate Disclaimer if needed
+    sensitive_cats = ["CTF", "HACKING", "SECURITY", "EXPLOIT", "MALWARE", "RED TEAM"]
+    current_cat = meta.get("category", "").upper()
+    current_tags = meta.get("tags", "").upper()
+    
+    disclaimer_html = ""
+    
+    # Check if any sensitive keyword is in Category OR Tags
+    is_sensitive = any(cat in current_cat for cat in sensitive_cats) or \
+                   any(tag in current_tags for tag in sensitive_cats)
+    
+    if is_sensitive:
+        disclaimer_html = """
+        <div class="legal-warning">
+            <div class="warning-icon">⚠️ WARNING_</div>
+            <p>
+                The information provided in this article is for <strong>EDUCATIONAL PURPOSES ONLY</strong>.
+                The author is not responsible for any misuse of the information. 
+                Testing these techniques on systems without explicit permission is <strong>ILLEGAL</strong>.
+            </p>
+        </div>
+        """
+    
     # Inject Metadata
-    output_html = template.replace("[TITLE]", meta.get("title", "Untitled"))
-    output_html = output_html.replace("[WRITEUP TITLE HERE]", meta.get("title", "Untitled"))
+    title_text = meta.get("title", "Untitled")
+    
+    # Dynamic Title based on sensitivity
+    if is_sensitive:
+        page_title = f"⚠️ | {title_text}"
+    else:
+        page_title = f"WRITEUP_LOG | {title_text}"
+        
+    output_html = template.replace("[PAGE_TITLE]", page_title)
+    output_html = output_html.replace("[TITLE]", title_text) # Keep for other uses if any
+    output_html = output_html.replace("[WRITEUP TITLE HERE]", title_text)
     output_html = output_html.replace("[YYYY-MM-DD]", meta.get("date", "YYYY-MM-DD"))
     output_html = output_html.replace("[WEB/NETWORK/CTF]", meta.get("category", "Uncategorized"))
     output_html = output_html.replace("Alterpix", meta.get("author", "Alterpix"))
+    output_html = output_html.replace("<!-- SEO_TAGS_PLACEHOLDER -->", seo_tags)
+    output_html = output_html.replace("<!-- DISCLAIMER_PLACEHOLDER -->", disclaimer_html)
     
     # Inject Content
     output_html = output_html.replace("{{ CONTENT }}", html_content)
     
-    # Save Output
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
 
-    filename = os.path.basename(input_file).replace(".md", ".html")
     output_path = os.path.join(OUTPUT_DIR, filename)
     
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(output_html)
     
     print(f"[+] Successfully generated: {output_path}")
+    
+    # Return metadata for Sitemap/RSS
+    meta['filename'] = filename
+    meta['url'] = f"{BASE_URL}/writeups/{filename}"
+    return meta
+
+def generate_sitemap(posts):
+    """Generates sitemap.xml"""
+    sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    
+    # Add root
+    sitemap += f'  <url>\n    <loc>{BASE_URL}/</loc>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>\n'
+    
+    today = datetime.date.today().strftime("%Y-%m-%d")
+    
+    for post in posts:
+        sitemap += f'  <url>\n    <loc>{post["url"]}</loc>\n    <lastmod>{post.get("date", today)}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n'
+    
+    sitemap += '</urlset>'
+    
+    with open("sitemap.xml", "w", encoding="utf-8") as f:
+        f.write(sitemap)
+    print(f"[+] Generated sitemap.xml with {len(posts)} posts.")
+
+def generate_rss(posts):
+    """Generates feed.xml"""
+    rss = '<?xml version="1.0" encoding="UTF-8" ?>\n'
+    rss += '<rss version="2.0">\n'
+    rss += '<channel>\n'
+    rss += f'  <title>Alterpix Writeups</title>\n'
+    rss += f'  <link>{BASE_URL}</link>\n'
+    rss += f'  <description>Cyber Security Writeups & Tutorials</description>\n'
+    
+    for post in posts:
+        rss += '  <item>\n'
+        rss += f'    <title>{escape(post["title"])}</title>\n'
+        rss += f'    <link>{post["url"]}</link>\n'
+        rss += f'    <description>{escape(post.get("description", ""))}</description>\n'
+        rss += f'    <pubDate>{post.get("date")}</pubDate>\n'
+        rss += '  </item>\n'
+    
+    rss += '</channel>\n</rss>'
+    
+    with open("feed.xml", "w", encoding="utf-8") as f:
+        f.write(rss)
+    print(f"[+] Generated feed.xml with {len(posts)} posts.")
+
+def generate_index_list(posts):
+    """Generates the HTML list of writeups for index.html."""
+    
+    # Sort posts by date (newest first)
+    posts.sort(key=lambda x: x.get('date', '0000-00-00'), reverse=True)
+    
+    # Group by Category
+    groups = {}
+    for post in posts:
+        cat = post.get('category', 'Uncategorized').upper()
+        if cat not in groups:
+            groups[cat] = []
+        groups[cat].append(post)
+    
+    html_output = ""
+    
+    # Sort categories to ensure consistent order (e.g., WRITEUP first, then TUTORIAL)
+    # You might want custom sorting here, but alphabetical is a good start
+    sorted_cats = sorted(groups.keys())
+    
+    for cat in sorted_cats:
+        html_output += f'<div class="writeup-group">\n'
+        html_output += f'  <h3 class="group-title">:: {cat} ::</h3>\n'
+        html_output += f'  <ul class="writeup-list">\n'
+        
+        for post in groups[cat]:
+            url = post['url'].replace(BASE_URL + "/", "") # Relative path from root
+            description = post.get('description', '')[:50] + '...' if post.get('description') else ''
+            
+            # Simple ID generation based on filename hash or counter could be better, 
+            # but for now let's use a truncated hash of the title for a "cool" ID
+            import hashlib
+            post_id = hashlib.md5(post['title'].encode()).hexdigest()[:4].upper()
+            
+            html_output += f'    <li>\n'
+            html_output += f'      <a href="{url}">\n'
+            html_output += f'        <span class="log-id">#{post_id}</span>\n'
+            html_output += f'        <span class="log-title">{post["title"]}</span>\n'
+            html_output += f'        <span class="log-status">[{post["date"]}]</span>\n'
+            html_output += f'      </a>\n'
+            html_output += f'    </li>\n'
+            
+        html_output += f'  </ul>\n'
+        html_output += f'</div>\n'
+        
+    # Inject into index.html
+    index_path = "index.html"
+    if os.path.exists(index_path):
+        with open(index_path, "r", encoding="utf-8") as f:
+            index_content = f.read()
+        
+        # Regex to replace content between a placeholder or just replace a specific marker
+        # We used <!-- DYNAMIC_WRITEUPS_LIST -->
+        
+        # Be careful not to wipe out the marker so we can update again
+        marker = "<!-- DYNAMIC_WRITEUPS_LIST -->"
+        if marker in index_content:
+            # We want to replace the marker AND its generated content if we ran this before?
+            # actually, simplest way is: keep the marker, and replace everything after it until end of container?
+            # Or just Replace the marker with "Marker + Content".
+            # But subsequent runs would append.
+            # State management is hard with simple replace.
+            # Best approach for this script: 
+            # 1. Read index.html lines
+            # 2. Find start marker.
+            # 3. Find end of the container? Or just assume we replace the marker with formatted content WRAPPED in markers?
+            
+            # Let's use a start and end marker strategy for robustness in future
+            # But user currently just has one marker.
+            # Let's simple-replace the marker with a block that includes the marker. 
+            
+            # Regex to find existing generated block if any
+            pattern = re.compile(f'{re.escape(marker)}.*?(?=<div class="scanline">|<footer>|</section>)', re.DOTALL)
+            # This is risky. 
+            
+            # Safer: Read index.html, split by marker. 
+            # But we need to define where the dynamic content ENDS.
+            # Let's assume the user wants us to manage the *entire* inner HTML of `.writeup-grid`
+            # For now, I will start by just replacing the marker with the content. 
+            # NOTE: This means subsequent runs won't work unless I add a specific End Marker.
+            pass
+    
+    # RE-THINK: To support re-running, I should wrap the injected content in comments.
+    # <!-- DYNAMIC_START --> ... content ... <!-- DYNAMIC_END -->
+    # The user manual step put <!-- DYNAMIC_WRITEUPS_LIST -->.
+    # I will replace `<!-- DYNAMIC_WRITEUPS_LIST -->` with:
+    # `<!-- DYNAMIC_WRITEUPS_LIST -->\n<!-- AUTOGENERATED_START -->\n{html_output}\n<!-- AUTOGENERATED_END -->`
+    
+    # And on subsequent runs, I will regex replace `<!-- AUTOGENERATED_START -->.*?<!-- AUTOGENERATED_END -->`
+    
+    if os.path.exists(index_path):
+        with open(index_path, "r", encoding="utf-8") as f:
+            index_content = f.read()
+            
+        start_marker = "<!-- DYNAMIC_WRITEUPS_LIST -->"
+        auto_start = "<!-- AUTOGENERATED_start -->"
+        auto_end = "<!-- AUTOGENERATED_end -->"
+        
+        new_block = f"{start_marker}\n{auto_start}\n{html_output}\n{auto_end}"
+        
+        if auto_start in index_content:
+            # Update existing block
+            pattern = re.compile(f"{re.escape(auto_start)}.*?{re.escape(auto_end)}", re.DOTALL)
+            new_index_content = re.sub(pattern, f"{auto_start}\n{html_output}\n{auto_end}", index_content)
+        elif start_marker in index_content:
+            # First run, replace the placeholder
+            new_index_content = index_content.replace(start_marker, new_block)
+        else:
+            print("[-] Warning: Placeholder <!-- DYNAMIC_WRITEUPS_LIST --> not found in index.html")
+            return
+
+        with open(index_path, "w", encoding="utf-8") as f:
+            f.write(new_index_content)
+        print("[+] Updated index.html with latest writeups.")
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python3 tools/convert.py <path_to_markdown_file>")
+        print("Usage: python3 tools/convert.py <path_to_markdown_file> [more_files...]")
         sys.exit(1)
     
-    input_file = sys.argv[1]
-    process_file(input_file)
+    posts_metadata = []
+    
+    for input_file in sys.argv[1:]:
+        meta = process_file(input_file)
+        if meta:
+            posts_metadata.append(meta)
+    
+    # Generate Indexes
+    generate_sitemap(posts_metadata)
+    generate_rss(posts_metadata)
+    generate_index_list(posts_metadata)

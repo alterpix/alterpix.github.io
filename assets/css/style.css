@@ -214,6 +214,132 @@ h3 {
     border-color: var(--primary-color);
 }
 
+/* Search Bar */
+.search-container {
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    background: rgba(10, 10, 10, 0.8);
+    border: 1px solid #333;
+    padding: 10px 15px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.search-icon {
+    color: var(--primary-color);
+    margin-right: 10px;
+    font-weight: bold;
+    animation: blink 1s infinite;
+}
+
+#searchInput {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    width: 100%;
+    outline: none;
+}
+
+#searchInput::placeholder {
+    color: #555;
+    font-style: italic;
+}
+
+/* Writeup Content Links */
+.writeup-body a {
+    color: #00ffff;
+    /* Cyber Cyan */
+    text-decoration: none;
+    border-bottom: 1px dashed #00ffff;
+    transition: all 0.3s ease;
+}
+
+.writeup-body a:hover {
+    background: rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+    color: #fff;
+    border-bottom-style: solid;
+}
+
+.writeup-body a:visited {
+    color: #ff00ff;
+    /* Neon Magenta for visited */
+    border-bottom-color: #ff00ff;
+}
+
+/* Redacted Data */
+.redacted {
+    background: #000;
+    color: #0f0;
+    /* Hacker Green text */
+    border: 1px solid #333;
+    padding: 2px 6px;
+    margin: 0 2px;
+    font-family: 'Share Tech Mono', monospace;
+    cursor: help;
+    user-select: none;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+}
+
+.redacted:hover {
+    background: #111;
+    box-shadow: 0 0 5px rgba(0, 255, 65, 0.2);
+}
+
+/* Legal Disclaimer */
+.legal-warning {
+    border: 1px solid #ff5f56;
+    background: rgba(255, 95, 86, 0.1);
+    color: #ff5f56;
+    padding: 15px;
+    margin-bottom: 25px;
+    border-left: 5px solid #ff5f56;
+    font-size: 0.9em;
+    position: relative;
+    overflow: hidden;
+}
+
+.warning-icon {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    border-bottom: 1px dashed #ff5f56;
+    display: inline-block;
+}
+
+.legal-warning strong {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.legal-warning::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #ff5f56;
+    animation: scanline 2s linear infinite;
+    opacity: 0.5;
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(1000%);
+    }
+
+    /* simple drop */
+}
+
 /* --- COMPACT WRITEUP STYLES --- */
 .writeup-grid {
     display: grid;

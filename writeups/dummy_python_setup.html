@@ -4,8 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[PAGE_TITLE]</title>
-    <!-- SEO_TAGS_PLACEHOLDER -->
+    <title>⚠️ | Tutorial: Cara Setup Environment Python untuk Hacking</title>
+    
+    <meta name="description" content="Panduan lengkap langkah demi langkah untuk menyiapkan environment Python yang powerful untuk keperluan Penetration Testing dan Cyber Security.">
+    <link rel="canonical" href="https://alterpix.github.io/writeups/dummy_python_setup.html">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://alterpix.github.io/writeups/dummy_python_setup.html">
+    <meta property="og:title" content="Tutorial: Cara Setup Environment Python untuk Hacking">
+    <meta property="og:description" content="Panduan lengkap langkah demi langkah untuk menyiapkan environment Python yang powerful untuk keperluan Penetration Testing dan Cyber Security.">
+    <meta property="og:image" content="https://alterpix.github.io/assets/img/test_image.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://alterpix.github.io/writeups/dummy_python_setup.html">
+    <meta property="twitter:title" content="Tutorial: Cara Setup Environment Python untuk Hacking">
+    <meta property="twitter:description" content="Panduan lengkap langkah demi langkah untuk menyiapkan environment Python yang powerful untuk keperluan Penetration Testing dan Cyber Security.">
+    <meta property="twitter:image" content="https://alterpix.github.io/assets/img/test_image.png">
+    
     <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
@@ -26,17 +43,103 @@
     <main class="container">
         <article class="writeup-content">
             <header>
-                <h1>[WRITEUP TITLE HERE]</h1>
+                <h1>Tutorial: Cara Setup Environment Python untuk Hacking</h1>
                 <div class="writeup-meta">
-                    <span>DATE: [YYYY-MM-DD]</span>
+                    <span>DATE: 2026-02-14</span>
                     <span>AUTHOR: Alterpix</span>
-                    <span>CATEGORY: [WEB/NETWORK/CTF]</span>
+                    <span>CATEGORY: Tutorial</span>
                 </div>
             </header>
 
             <div class="writeup-body">
-                <!-- DISCLAIMER_PLACEHOLDER -->
-                {{ CONTENT }}
+                
+        <div class="legal-warning">
+            <div class="warning-icon">⚠️ WARNING_</div>
+            <p>
+                The information provided in this article is for <strong>EDUCATIONAL PURPOSES ONLY</strong>.
+                The author is not responsible for any misuse of the information. 
+                Testing these techniques on systems without explicit permission is <strong>ILLEGAL</strong>.
+            </p>
+        </div>
+        
+                <p><img alt="Python Hacking" src="../assets/img/test_image.png" /></p>
+<h2>Pendahuluan</h2>
+<p>Python adalah bahasa pemrograman yang wajib dikuasai oleh setiap hacker. Library-nya yang kaya membuat kita bisa membuat tools exploitasi, scanner, dan automation dengan sangat cepat.</p>
+<p>Dalam tutorial ini, kita akan membahas cara setup environment yang benar agar tidak merusak sistem operasi utama kamu.</p>
+<h2>Mengapa Virtual Environment Itu Penting?</h2>
+<p>Jangan pernah menginstall paket python global dengan <code>sudo pip install</code>! Itu bisa merusak dependensi sistem linux kamu. Solusinya adalah <strong>Virtual Environment</strong>.</p>
+<h3>Cara Membuat Virtual Environment</h3>
+<p>Gunakan perintah <code>venv</code> bawaan Python 3:</p>
+<div class="code-terminal">
+    <div class="terminal-header">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <div class="title">BASH_SHELL</div>
+    </div>
+    <div class="terminal-body"><div class="codehilite"><pre><span></span><code><span class="c1"># Install paket venv jika belum ada</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-venv
+
+<span class="c1"># Buat folder project</span>
+mkdir<span class="w"> </span>tools-hacking
+<span class="nb">cd</span><span class="w"> </span>tools-hacking
+
+<span class="c1"># Buat virtual environment bernama &#39;env&#39;</span>
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>env
+
+<span class="c1"># Aktifkan environment</span>
+<span class="nb">source</span><span class="w"> </span>env/bin/activate
+</code></pre></div></div>
+</div>
+
+<p>Setelah aktif, prompt terminal kamu akan berubah ada tanda <code>(env)</code>.</p>
+<h2>Install Tools Wajib</h2>
+<p>Berikut adalah daftar library yang "Wajib Fardu 'Ain" untuk diinstall:</p>
+<div class="code-terminal">
+    <div class="terminal-header">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <div class="title">TERMINAL</div>
+    </div>
+    <div class="terminal-body"><div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>requests<span class="w"> </span>scapy<span class="w"> </span>pwntools<span class="w"> </span>beautifulsoup4
+</code></pre></div></div>
+</div>
+
+<ul>
+<li><strong>Requests</strong>: Untuk HTTP request (Web Hacking).</li>
+<li><strong>Scapy</strong>: Untuk manipulasi paket jaringan (Network Hacking).</li>
+<li><strong>Pwntools</strong>: Framework CTF untuk Binary Exploitation.</li>
+</ul>
+<h2>Contoh Script Sederhana</h2>
+<p>Mari kita coba buat port scanner sederhana menggunakan Python.</p>
+<div class="code-terminal">
+    <div class="terminal-header">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <div class="title">PYTHON_SCRIPT</div>
+    </div>
+    <div class="terminal-body"><div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
+
+<span class="n">target</span> <span class="o">=</span> <span class="s2">&quot;127.0.0.1&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">scan_port</span><span class="p">(</span><span class="n">port</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">settimeout</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">connect_ex</span><span class="p">((</span><span class="n">target</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Port </span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2"> is OPEN&quot;</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">443</span><span class="p">]:</span>
+    <span class="n">scan_port</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+</code></pre></div></div>
+</div>
+
+<p>Simpan script di atas sebagai <code>scanner.py</code> dan jalankan!</p>
+<h2>Kesimpulan</h2>
+<p>Setup yang benar adalah langkah awal menjadi profesional. Jangan malas untuk membuat environment terisolasi untuk setiap project tools kamu. Safe Hacking!</p>
             </div>
 
             <br>
